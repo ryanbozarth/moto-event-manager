@@ -1,3 +1,24 @@
+$(function() {
+	getAndDisplayAllEvents();
+
+    $('.btn-create-account').submit(function(e) {
+    		e.preventDefault();
+    		createNewAccount();
+            console.log(email);
+            console.log(password);
+    	});
+});
+
+function createNewAccount() {
+    var email = $('#email-input').val();
+    var password = $('').val();
+    if (email === '') {
+        alert('Please enter a valid email address.');
+    } else if (password === '') {
+        alert('Please enter a valid password.');
+    }
+}
+
 var MOCK_EVENTS = {
     "events": [
         {
@@ -44,7 +65,3 @@ function displayAllEvents(data) {
 function getAndDisplayAllEvents() {
 	getAllEvents(displayAllEvents);
 }
-
-$(function() {
-	getAndDisplayAllEvents();
-});

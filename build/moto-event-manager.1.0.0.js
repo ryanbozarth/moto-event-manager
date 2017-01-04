@@ -44,7 +44,28 @@
 /* 0 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
+	
+	$(function () {
+	    getAndDisplayAllEvents();
+	
+	    $('.btn-create-account').submit(function (e) {
+	        e.preventDefault();
+	        createNewAccount();
+	        console.log(email);
+	        console.log(password);
+	    });
+	});
+	
+	function createNewAccount() {
+	    var email = $('#email-input').val();
+	    var password = $('').val();
+	    if (email === '') {
+	        alert('Please enter a valid email address.');
+	    } else if (password === '') {
+	        alert('Please enter a valid password.');
+	    }
+	}
 	
 	var MOCK_EVENTS = {
 	    "events": [{
@@ -81,17 +102,13 @@
 	
 	function displayAllEvents(data) {
 	    for (index in data.events) {
-	        $('body').append("<p> " + data.events[index].text + " </p>");
+	        $('body').append('<p> ' + data.events[index].text + ' </p>');
 	    }
 	}
 	
 	function getAndDisplayAllEvents() {
 	    getAllEvents(displayAllEvents);
 	}
-	
-	$(function () {
-	    getAndDisplayAllEvents();
-	});
 
 /***/ }
 /******/ ]);
