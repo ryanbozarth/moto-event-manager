@@ -1,38 +1,37 @@
-var MOCK_STATUS_UPDATES = {
-	{
+var MOCK_EVENTS = {
     "events": [
         {
             "id": "001",
             "title": "North Coast Ocean Ride",
             "date": "Jan 14, 2017",
             "level": "beginner",
-            "attendees": "John Doe", "Jane Smith"
+            "attendees": ["John Doe", "Jane Smith"]
         },
         {
             "id": "002",
             "title": "East Bay Hills All Day",
             "date": "Jan 21, 2017",
             "level": "intermediate",
-            "attendees": "John Doe"
+            "attendees": ["John Doe"]
         },
         {
             "id": "003",
             "title": "Sound Coast Loop – SF to SC",
             "date": "Jan 30, 2017",
             "level": "advanced",
-            "attendees": "John Doe", "Jane Smith", "Jack Anderson"
+            "attendees": ["John Doe", "Jane Smith", "Jack Anderson"]
         },
         {
             "title": "Pacifica Surf and Breakfast",
             "date": "Feb 7, 2017",
             "level": "beginner",
-            "attendees": "Jane Smith"
+            "attendees": ["Jane Smith"]
         }
     ]
 };
 
 function getAllEvents(callback) {
-	 setTimeout(() => callback(MOCK_STATUS_UPDATES)}, 100);
+	 setTimeout(() => callback(MOCK_EVENTS), 100);
 }
 
 function displayAllEvents(data) {
