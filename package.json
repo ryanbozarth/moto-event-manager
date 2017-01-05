@@ -12,9 +12,9 @@
     "build:bootstrap": "cd node_modules/bootstrap-3.3.7/ && grunt dist && cd ../.. && npm run copy:bootstrap",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:bootstrap && npm run build:css && npm run build:js",
     "watch": "npm run watch:html & npm run watch:css & npm run watch:js",
-    "build:html": "npm run clean:html && cp public/index.html build/",
+    "build:html": "npm run clean:html && cp public/*.html build/",
     "watch:html": "npm run build:html && chokidar index.html -c 'npm run build:html'",
-    "clean:html": "rm -f build/index.html",
+    "clean:html": "rm -f build/*.html",
     "build:css": "npm run build:css:unminified && npm run build:css:minified",
     "watch:css": "npm run watch:css:unminified & npm run watch:css:minified",
     "clean:css": "npm run clean:css:unminified && npm run clean:css:minified",
@@ -37,11 +37,14 @@
   "author": "Ryan Bozarth",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "jquery": "^3.1.1",
     "mongodb": "^2.2.16",
-    "mongoose": "^4.7.5"
+    "mongoose": "^4.7.5",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
