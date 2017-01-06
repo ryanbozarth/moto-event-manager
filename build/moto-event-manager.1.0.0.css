@@ -1,4 +1,13 @@
 .divider {
   height: 150px;
 }
+.pl-0 {
+  padding-left: 0px;
+}
+.mt-2 {
+  margin-top: 20px;
+}
+.uppercase {
+  text-transform: uppercase;
+}
 /*# sourceMappingURL=moto-event-manager.1.0.0.css.map */

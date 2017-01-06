@@ -13,11 +13,13 @@
 
 <body>
   <div class="container">
-    <div class="col-sm-4">
-      <form>
+    <div class="col-xs-6">
+      <h2>Tell us a little about yourself.</h2>
+      <hr />
+      <form action="#" id="onboarding-form">
         <div class="form-group">
           <label for="motoTypeQuestion">What kind of motorcycle do you own?</label>
-          <input class="form-control" id="motorcycle-type" aria-describedby="motorcycle-type" placeholder="Triumph">
+          <input type="text" class="form-control" id="motorcycle-type" aria-describedby="motorcycle-type" placeholder="Triumph">
         </div>
         <div class="form-group">
           <label for="experienceQuestion">What level rider are you?</label>
@@ -35,13 +37,14 @@
           <option>Other locations</option>
           </select>
         </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary btn-rider-context">Submit</button>
       </form>
       </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
-    <script src="bootstrap.min.js" />
+    <script src="bootstrap.min.js"/></script>
+    <script src="moto-event-manager.1.0.0.min.js"></script>
 </body>
 
 </html>

@@ -84,6 +84,12 @@ $(function() {
     		e.preventDefault();
     		createNewAccount();
     	});
+
+    $('#onboarding-form').submit(function(e) {
+            e.preventDefault();
+            addRiderContextToAccount();
+        });
+
 });
 
 function createNewAccount() {
@@ -96,7 +102,16 @@ function createNewAccount() {
     } else if (password === '') {
         alert('Please enter a valid password.');
     }
-}
+};
+
+function addRiderContextToAccount() {
+    var moto = $('#motorcycle-type').val();
+    var level = $('#level-rider').val();
+    var location = $('#location-rider').val();
+    console.log(moto);
+    console.log(level);
+    console.log(location);
+};
 
 // Mock Events //
 
