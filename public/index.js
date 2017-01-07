@@ -90,6 +90,10 @@ $(function() {
             addRiderContextToAccount();
         });
 
+    $('.btn-login').on( "click", function(e) {
+        e.preventDefault();
+        loginToAccount()
+    });
 });
 
 function createNewAccount() {
@@ -101,8 +105,32 @@ function createNewAccount() {
         alert('Please enter a valid email address.');
     } else if (password === '') {
         alert('Please enter a valid password.');
+    } else {
+        goToOnboarding();
     }
 };
+
+function loginToAccount() {
+    let email = $('#email-input-login').val();
+    var password = $('#password-input-login').val();
+    console.log(email);
+    console.log(password);
+    if (email === '') {
+        // does not exists, alert
+    } else if (password === '') {
+        // does not match, alert
+    } else {
+        gotoMain();
+    }
+};
+
+function goToOnboarding() {
+  location.href="intro.html";
+};
+
+function gotoMain() {
+  location.href="home.html";
+}
 
 function addRiderContextToAccount() {
     var moto = $('#motorcycle-type').val();
@@ -152,11 +180,20 @@ function getAllEvents(callback) {
 }
 
 function displayAllEvents(data) {
-	for (var index in data.events) {
-		$('body').append(
-			`<p> ${data.events[index].title} </p>`)
-	}
+	//for (var index in data.events) {
+		$('.event-title-0').append(`${data.events[0].title}`);
+        $('.event-date-0').append(`${data.events[0].date}`);
+        $('.event-level-0').append(`${data.events[0].level}`);
+    for (let i=0; i < data.events[0].attendees.length; i++){
+        $('.event-attendees-0').append(`${data.events[0].attendees[i]} `)
+    }
+
+	//}
 }
+
+// function displayEventsOnHomePage(data) {
+//
+// }
 
 function getAndDisplayAllEvents() {
 	getAllEvents(displayAllEvents);
