@@ -185,8 +185,14 @@ function displayAllEvents(data) {
         $('.event-date-0').append(`${data.events[0].date}`);
         $('.event-level-0').append(`${data.events[0].level}`);
     for (let i=0; i < data.events[0].attendees.length; i++){
-        $('.event-attendees-0').append(`${data.events[0].attendees[i]} `)
+			var html = '<div class="panel panel-default"><div class="panel-body">';
+                html += '<img class="img-responsive center-block" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" alt="profile-image" height="75" width="75"/>'
+                html += '<div class="panel-footer">'+ data.events[0].attendees[i] +'</div></div>'
+                $('.event-attendees-0').append(html);
     }
+
+
+
 
 	//}
 }
