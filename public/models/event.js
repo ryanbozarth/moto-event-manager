@@ -5,7 +5,7 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
     title: {
       type: String,
       required: true
@@ -20,7 +20,7 @@ const EventSchema = new mongoose.Schema({
     },
     attendees: {
       type: Array
-    },
+    }
 
 });
 
