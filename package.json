@@ -59,6 +59,7 @@
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
     "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
     "uglify-js": "^2.7.5",
     "webpack": "^1.14.0",
     "webpack-node-externals": "^1.5.4"

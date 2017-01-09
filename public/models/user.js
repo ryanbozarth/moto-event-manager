@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     },
     level: {
         type: String
-    }
+    },
     location: {
         type: String
     }

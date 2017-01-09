@@ -1,79 +1,5 @@
 
 'use strict';
-// Credentials //
-// app.post('/', jsonParser, function(req, res) {
-//     if (!req.body) {
-//         return res.status(400).json({
-//             message: "No request body"
-//         });
-//     }
-//
-//     if (!('username' in req.body)) {
-//         return res.status(422).json({
-//             message: 'Missing field: username'
-//         });
-//     }
-//
-//     var username = req.body.username;
-//
-//     if (typeof username !== 'string') {
-//         return res.status(422).json({
-//             message: 'Incorrect field type: username'
-//         });
-//     }
-//
-//     username = username.trim();
-//
-//     if (username === '') {
-//         return res.status(422).json({
-//             message: 'Incorrect field length: username'
-//         });
-//     }
-//
-//     if (!('password' in req.body)) {
-//         return res.status(422).json({
-//             message: 'Missing field: password'
-//         });
-//     }
-//
-//     var password = req.body.password;
-//
-//     if (typeof password !== 'string') {
-//         return res.status(422).json({
-//             message: 'Incorrect field type: password'
-//         });
-//     }
-//
-//     password = password.trim();
-//
-//     if (password === '') {
-//         return res.status(422).json({
-//             message: 'Incorrect field length: password'
-//         });
-//     }
-//
-//     var user = new User({
-//         username: username,
-//         password: password
-//     });
-//
-//     user.save(function(err) {
-//         if (err) {
-//             return res.status(500).json({
-//                 message: 'Internal server error'
-//             });
-//         }
-//
-//         return res.status(201).json({});
-//     });
-// });
-//
-// mongoose.connect('mongodb://localhost/auth').then(function() {
-//     app.listen(process.env.PORT || 8080);
-// });
-
-
-
 
 // Event Handlers //
 
@@ -93,6 +19,11 @@ $(function() {
     $('.btn-login').on( "click", function(e) {
         e.preventDefault();
         loginToAccount()
+    });
+
+    $('.panel').on( "click", function(e) {
+        e.preventDefault();
+        goToEventDetails();
     });
 });
 
@@ -115,13 +46,7 @@ function loginToAccount() {
     var password = $('#password-input-login').val();
     console.log(email);
     console.log(password);
-    if (email === '') {
-        // does not exists, alert
-    } else if (password === '') {
-        // does not match, alert
-    } else {
-        gotoMain();
-    }
+    gotoMain();
 };
 
 function goToOnboarding() {
@@ -143,7 +68,7 @@ function addRiderContextToAccount() {
 
 // Mock Events //
 
-var MOCK_EVENTS = {
+const MOCK_EVENTS = {
     "events": [
         {
             "id": "001",
@@ -179,28 +104,49 @@ function getAllEvents(callback) {
 	 setTimeout(() => callback(MOCK_EVENTS), 100);
 }
 
-function displayAllEvents(data) {
-	//for (var index in data.events) {
+function showAttendees(callback) {
+	 setTimeout(() => callback(MOCK_EVENTS), 100);
+}
+
+function getmyEvents(callback) {
+	 setTimeout(() => callback(MOCK_EVENTS), 100);
+}
+
+function displayEventAttendees(data) {
 		$('.event-title-0').append(`${data.events[0].title}`);
         $('.event-date-0').append(`${data.events[0].date}`);
         $('.event-level-0').append(`${data.events[0].level}`);
     for (let i=0; i < data.events[0].attendees.length; i++){
-			var html = '<div class="panel panel-default"><div class="panel-body">';
+			var html =  '<div class="panel panel-default col-sm-4 pl-0"><div class="panel-body">';
                 html += '<img class="img-responsive center-block" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" alt="profile-image" height="75" width="75"/>'
                 html += '<div class="panel-footer">'+ data.events[0].attendees[i] +'</div></div>'
-                $('.event-attendees-0').append(html);
+                $('#attendees').append(html);
     }
-
-
-
-
-	//}
 }
 
-// function displayEventsOnHomePage(data) {
-//
-// }
+function displayAllEvents(data) {
+    for (let i=0; i < data.events.length; i++){
+        var html = '<div class="col-md-3"><div class="panel panel-default">'
+        html += '<div class="panel-body">'
+        html += '<img class="img-responsive center-block" src="https://static.pexels.com/photos/6548/cold-snow-winter-mountain.jpeg" alt="Mountain" height="150" width="190"></div>'
+        html += '<div class="panel-footer">'+ data.events[i].title +'</div></div></div>'
+        $('#allEvents').append(html);
+    }
+}
+
+function displayMyEvents(data) {
+    for (let i=0; i < data.events.length; i++){
+        var html = '<div class="col-md-3"><div class="panel panel-default" id="'+data.events[i].id+'">'
+        html += '<div class="panel-body">'
+        html += '<img class="img-responsive center-block" src="https://static.pexels.com/photos/6548/cold-snow-winter-mountain.jpeg" alt="Mountain" height="150" width="190"></div>'
+        html += '<div class="panel-footer">'+ data.events[i].title +'</div></div></div>'
+        $('#myEvents').append(html);
+    }
+}
+
 
 function getAndDisplayAllEvents() {
 	getAllEvents(displayAllEvents);
+    getmyEvents(displayMyEvents)
+    showAttendees(displayEventAttendees);
 }
