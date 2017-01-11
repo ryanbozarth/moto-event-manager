@@ -66,6 +66,21 @@ function addRiderContextToAccount() {
     console.log(location);
 };
 
+const url = "http://localhost:8080"
+const event = {title: "TBD", attendees: []}
+
+$.ajax({
+  url: url + '/events/' + id
+  type: 'PUT',
+  data: JSON.stringify(event),
+  success: function(result){
+    console.log(result);
+  }
+});
+// function update (id, name) {
+// 	attendees.push(event.findOneAndUpdate)
+// }
+
 // Mock Events //
 
 const MOCK_EVENTS = {
