@@ -7,11 +7,12 @@ const mongoose = require('mongoose');
 const User = require('./public/models/user.js');
 const Event = require('./public/models/event.js');
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.status(200);
+  res.sendFile(__dirname + '/build/index.html');
 });
 
 app.get('/intro', (req, res) => {
@@ -31,6 +32,15 @@ app.get('/event-details/:id', (req, res) => {
   // get all rides for user
   // database requst find by user name. get back all rides for which user name = ryanbozarth
   // json object parse and display
+});
+
+app.put('/event/:id', (req, res) => {
+  // req.body (has a body otherwise error)
+  let updatedItem = Event.update({
+    id: req.params.id;
+    attendees: req.body.attendees;
+  });
+  res.status(204).json(updatedItem);
 });
 
 app.get('/main/:id', (req, res) => {
