@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    username: {
+    email: {
         type: String,
         required: true,
         unique: true
@@ -21,15 +21,10 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-UserSchema.methods.validatePassword = function(password, callback) {
-    bcrypt.compare(password, this.password, function(err, isValid) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        callback(null, isValid);
-    });
-};
+
+UserSchema.methods.validatePassword = function(password) {
+  return bcrypt.compare(password, this.password);
+}
 
 const User = mongoose.model('User', UserSchema);
 
