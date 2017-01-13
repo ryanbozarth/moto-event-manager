@@ -10,14 +10,27 @@ const passport = require('passport');
 const User = require('./public/models/user.js');
 const Event = require('./public/models/event.js');
 
+const DATABASE_URL = process.env.DATABASE_URL ||
+  global.DATABASE_URL ||
+  (process.env.NODE_ENV === 'production' ?
+    'mongodb://ryanbozarth:QmdrKcFz3UB,zG@ds145848.mlab.com:45848/moto-event-manager' :
+    'mongodb://localhost/moto-event-manager');
+const PORT = process.env.PORT || 8080;
+
+console.log('database_url: ' + DATABASE_URL);
+console.log('port: ' + PORT);
+
+
 function runServer() {
   return new Promise((resolve, reject) => {
+    console.log(DATABASE_URL);
     mongoose.connect(DATABASE_URL, err => {
       if (err) {
         return reject(err);
       }
       server = app.listen(PORT, () => {
           console.log(`Your app is listening on port ${PORT}`);
+
           resolve();
         })
         .on('error', err => {
@@ -67,7 +80,7 @@ if (require.main === module) {
 
 //app.delete('/api/user/:id/role/:role-name')
 
-app.use(express.static('public'));
+app.use(express.static('build'));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -75,7 +88,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/build/index.html');
 });
 
-app.post('/', passport.authenticate('local'), function(req, res) {
+app.post('/login', passport.authenticate('local'), function(req, res) {
   if (err) {
     throw err;
   }
@@ -95,46 +108,46 @@ app.post('/register', (req, res) => {
   console.log(email);
 
   //validation
-  req.checkBody('email', 'Email is required').notEmpty();
-  req.checkBody('password', 'Password is required').notEmpty();
+  // req.checkBody('email', 'Email is required').notEmpty();
+  // req.checkBody('password', 'Password is required').notEmpty();
 
-  var errors = req.validationErrors();
-  if (errors) {
-    console.log('there are erorrs');
-  } else {
-    console.log('Passed');
-  }
+  // var errors = req.validationErrors();
+  // if (errors) {
+  //   console.log('there are erorrs');
+  // } else {
+  //   console.log('Passed');
+  // }
   bcrypt.genSalt(10, function(err, salt) {
     if (err) {
+      console.log('there are gensalt errors');
       return res.status(500).json({
         message: 'Internal server error'
       });
     }
     bcrypt.hash(password, salt, function(err, hash) {
       if (err) {
+        console.log(err);
         return res.status(500).json({
           message: 'Internal server error'
         });
       }
       console.log(hash);
-    });
-
-    var user = new User({
-      email: email,
-      password: hash
-    });
-
-    user.save(function(err) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Internal server error'
-        });
-      }
-      return res.status(201).json({});
+      var user = new User({
+        email: email,
+        password: hash
+      });
+      user.save(function(err) {
+        if (err) {
+          console.log('there are save');
+          return res.status(500).json({
+            message: 'Internal server error'
+          });
+        }
+        return res.status(201).json({});
+      });
     });
   });
 });
-
 
 app.get('/intro', (req, res) => {
   res.sendfile('./build/intro.html');
@@ -175,22 +188,10 @@ app.get("*", function(req, res) {
   res.redirect("/");
 });
 
-app.listen(process.env.PORT || 8080, () => console.log(
-  `Your app is listening on port ${process.env.PORT || 8080}`));
+// app.listen(process.env.PORT || 8080, () => console.log(
+//   `Your app is listening on port ${process.env.PORT || 8080}`));
 
 exports.app = app;
-
-const DATABASE_URL = process.env.DATABASE_URL ||
-  global.DATABASE_URL ||
-  (process.env.NODE_ENV === 'production' ?
-    'mongodb://ryanbozarth:QmdrKcFz3UB,zG@ds145848.mlab.com:45848/moto-event-manager' :
-    'mongodb://localhost/moto-event-manager');
-const PORT = process.env.PORT || 8080;
-
-console.log('database_url: ' + DATABASE_URL);
-console.log('port: ' + PORT);
-
-
 
 
 module.exports = {

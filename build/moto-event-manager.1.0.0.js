@@ -88,7 +88,7 @@
 	  var email = $('#email-input').val();
 	  var password = $('#password-input').val();
 	  var form_data = {
-	    username: email,
+	    email: email,
 	    password: password
 	  };
 	  console.log(email);
@@ -97,7 +97,8 @@
 	  $.ajax({
 	    url: 'http://localhost:8080/register',
 	    type: 'POST',
-	    data: form_data,
+	    data: JSON.stringify(form_data),
+	    contentType: 'application/json',
 	    success: function success(data, textStatus, jqXHR) {
 	      location.href = "intro.html";
 	    },
