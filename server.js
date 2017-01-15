@@ -131,27 +131,32 @@ app.post('/register', (req, res) => {
           message: 'Internal server error'
         });
       }
-      console.log(hash);
       var user = new User({
         email: email,
         password: hash
       });
       user.save(function(err) {
         if (err) {
-          console.log('there are save');
+          console.log('there is an error', err);
           return res.status(500).json({
             message: 'Internal server error'
           });
         }
-        return res.status(201).json({});
+        return res.status(201).json(user);
       });
     });
   });
 });
 
-app.get('/intro', (req, res) => {
-  res.sendfile('./build/intro.html');
-  res.status(200);
+app.put('/profile/:email', (req, res) => {
+    User.findOneAndUpdate(req.params.email, req.body, {}, function(err, profile) {
+      if (err) {
+        return res.status(500).json({
+          message: 'Internal server error - update'
+        });
+      };
+      return res.status(200).json(profile);
+    });
 });
 
 app.get('/main/:user', (req, res) => {
@@ -188,8 +193,7 @@ app.get("*", function(req, res) {
   res.redirect("/");
 });
 
-// app.listen(process.env.PORT || 8080, () => console.log(
-//   `Your app is listening on port ${process.env.PORT || 8080}`));
+
 
 exports.app = app;
 
