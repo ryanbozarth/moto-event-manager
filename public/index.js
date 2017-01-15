@@ -1,46 +1,8 @@
 'use strict';
 
-// Event Handlers //
-
-$(function() {
-  getAndDisplayAllEvents();
-
-  $('.register').on("click", function(e) {
-    e.preventDefault();
-    location.href = "register.html";
-  });
-
-  $('.btn-create-account').on("click", function(e) {
-    e.preventDefault();
-    createNewAccount();
-  });
-
-  $('#onboarding-form').submit(function(e) {
-    e.preventDefault();
-    addRiderContextToAccount();
-  });
-
-  $('.login').on("click", function(e) {
-    e.preventDefault();
-    location.href = "login.html";
-  });
-
-  $('.btn-login').on("click", function(e) {
-    e.preventDefault();
-    loginToAccount()
-  });
-
-  $('.panel').on("click", function(e) {
-    e.preventDefault();
-    goToEventDetails();
-  });
-});
-
 // functions
 
-function createNewAccount() {
-  var email = $('#email-input').val();
-  var password = $('#password-input').val();
+function createNewAccount(email, password) {
   var form_data = {
     email: email,
     password: password
@@ -54,29 +16,23 @@ function createNewAccount() {
     data: JSON.stringify(form_data),
     contentType: 'application/json',
     success: function(data, textStatus, jqXHR) {
-      localStorage.setItem('form_data.email', email);
+      //localStorage.setItem('form_data.email', email);
       window.location.href = "profile.html";
     },
     error: function(jqXHR, textStatus, errorThrown) {
-      console.log(errorThrown);
+      console.log(jqXHR, textStatus, errorThrown);
     }
   });
 };
 
-function addRiderContextToAccount() {
-  var moto = $('#motorcycle-type').val();
-  var level = $('#level-rider').val();
-  var location = $('#location-rider').val();
-  console.log(moto);
-  console.log(level);
-  console.log(location);
+function addRiderContextToAccount(moto, level, location) {
   var profile = {
     moto: moto,
     level: level,
     location: location
   }
-  let currentUser = localStorage.getItem('form_data.email');
-  console.log(localStorage.getItem('form_data.email'));
+//  let currentUser = localStorage.getItem('form_data.email');
+  //console.log(localStorage.getItem('form_data.email'));
   $.ajax({
     url: '/profile/'+currentUser,
     type: 'PUT',
@@ -84,6 +40,8 @@ function addRiderContextToAccount() {
     contentType: 'application/json',
     success: function(data, textStatus, jqXHR) {
     //  window.location.href = "main.html";
+    console.log(currentUser);
+    console.log(data);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       console.log(errorThrown);
@@ -181,3 +139,47 @@ function getAndDisplayAllEvents() {
   getmyEvents(displayMyEvents)
   showAttendees(displayEventAttendees);
 }
+
+// Event Handlers //
+
+$(function() {
+  getAndDisplayAllEvents();
+
+  $('.register').on("click", function(e) {
+    e.preventDefault();
+    location.href = "register.html";
+  });
+
+  $('.btn-create-account').on("click", function(e) {
+    e.preventDefault();
+    var email = $('#email-input').val();
+    var password = $('#password-input').val();
+    createNewAccount(email, password);
+  });
+
+  $('#onboarding-form').submit(function(e) {
+    e.preventDefault();
+    var moto = $('#motorcycle-type').val();
+    var level = $('#level-rider').val();
+    var location = $('#location-rider').val();
+    console.log(moto);
+    console.log(level);
+    console.log(location);
+    addRiderContextToAccount(moto, level, location);
+  });
+
+  $('.login').on("click", function(e) {
+    e.preventDefault();
+    location.href = "login.html";
+  });
+
+  $('.btn-login').on("click", function(e) {
+    e.preventDefault();
+    loginToAccount()
+  });
+
+  $('.panel').on("click", function(e) {
+    e.preventDefault();
+    goToEventDetails();
+  });
+});
