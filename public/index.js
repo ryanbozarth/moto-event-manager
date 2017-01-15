@@ -49,24 +49,18 @@ function createNewAccount() {
   console.log(password);
 
   $.ajax({
-    url: 'http://localhost:8080/register',
+    url: '/register',
     type: 'POST',
     data: JSON.stringify(form_data),
     contentType: 'application/json',
     success: function(data, textStatus, jqXHR) {
-      location.href = "intro.html";
+      localStorage.setItem('form_data.email', email);
+      window.location.href = "profile.html";
     },
     error: function(jqXHR, textStatus, errorThrown) {
       console.log(errorThrown);
     }
   });
-};
-
-function loginToAccount() {
-  let email = $('#email-input-login').val();
-  let password = $('#password-input-login').val();
-  console.log(email);
-  console.log(password);
 };
 
 function addRiderContextToAccount() {
@@ -76,8 +70,34 @@ function addRiderContextToAccount() {
   console.log(moto);
   console.log(level);
   console.log(location);
+  var profile = {
+    moto: moto,
+    level: level,
+    location: location
+  }
+  let currentUser = localStorage.getItem('form_data.email');
+  console.log(localStorage.getItem('form_data.email'));
+  $.ajax({
+    url: '/profile/'+currentUser,
+    type: 'PUT',
+    data: JSON.stringify(profile),
+    contentType: 'application/json',
+    success: function(data, textStatus, jqXHR) {
+    //  window.location.href = "main.html";
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(errorThrown);
+    }
+  });
+
 };
 
+function loginToAccount() {
+  let email = $('#email-input-login').val();
+  let password = $('#password-input-login').val();
+  console.log(email);
+  console.log(password);
+};
 
 // Mock Events //
 
@@ -155,7 +175,6 @@ function displayMyEvents(data) {
     $('#myEvents').append(html);
   }
 }
-
 
 function getAndDisplayAllEvents() {
   getAllEvents(displayAllEvents);
