@@ -6,10 +6,57 @@ const jsonParser = bodyParser.json();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const handlebars = require('handlebars');
+const session = require('express-session')
+const flash = require('connect-flash');
+const cookie = require('cookie-parser');
 
 const User = require('./public/models/user.js');
 const Event = require('./public/models/event.js');
 
+app.use(express.static('build'));
+app.use(bodyParser.json());
+app.use(cookie());
+appp.use(flash());
+
+//Express Session
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
+
+// Passport initializ
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Express Validator
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
+
+// Flash messages
+app.use(function(req, res , next) {
+  res.locals.sucess_msg = req.flash('sucess_msg');
+  res.locals.erro_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
+
+// Set database port
 const DATABASE_URL = process.env.DATABASE_URL ||
   global.DATABASE_URL ||
   (process.env.NODE_ENV === 'production' ?
@@ -20,7 +67,7 @@ const PORT = process.env.PORT || 8080;
 console.log('database_url: ' + DATABASE_URL);
 console.log('port: ' + PORT);
 
-
+// Run and close the server
 function runServer() {
   return new Promise((resolve, reject) => {
     console.log(DATABASE_URL);
@@ -59,64 +106,16 @@ if (require.main === module) {
   runServer().catch(err => console.error(err));
 };
 
-
-
-//app.get('/api/user', (req, res) => {
-
-//});
-
-//app.get('/api/user/:id'
-
-//app.post('/api/user'
-
-//app.put('/api/user/:id'
-
-//app.delete('/api/user/:id')
-
-// app.param('id', function())
-// get get id if not real throw
-// if real than save as req in requester object/
-// then next
-
-//app.delete('/api/user/:id/role/:role-name')
-
-app.use(express.static('build'));
-app.use(bodyParser.json());
-
 app.get('/', (req, res) => {
   res.status(200);
   res.sendFile(__dirname + '/build/index.html');
 });
-
-app.post('/login', passport.authenticate('local'), function(req, res) {
-  if (err) {
-    throw err;
-  }
-  res.status(200);
-  res.json(user); //without passowrd
-
-  // If this function gets called, authentication was successful.
-  // `req.user` contains the authenticated user.
-});
-
-
-
 
 app.post('/register', (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
   console.log(email);
 
-  //validation
-  // req.checkBody('email', 'Email is required').notEmpty();
-  // req.checkBody('password', 'Password is required').notEmpty();
-
-  // var errors = req.validationErrors();
-  // if (errors) {
-  //   console.log('there are erorrs');
-  // } else {
-  //   console.log('Passed');
-  // }
   bcrypt.genSalt(10, function(err, salt) {
     if (err) {
       console.log('there are gensalt errors');
@@ -157,6 +156,17 @@ app.put('/profile/:email', (req, res) => {
       };
       return res.status(200).json(profile);
     });
+});
+
+app.post('/login', passport.authenticate('local'), function(req, res) {
+  if (err) {
+    throw err;
+  }
+  res.status(200);
+  res.json(user); //don't send password
+
+  // If this function gets called, authentication was successful.
+  // `req.user` contains the authenticated user.
 });
 
 app.get('/main/:user', (req, res) => {
