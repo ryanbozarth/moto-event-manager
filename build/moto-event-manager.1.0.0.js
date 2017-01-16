@@ -46,7 +46,9 @@
 
 	'use strict';
 	
+	var currentUser = '';
 	// functions
+	
 	
 	function createNewAccount(email, password) {
 	  var form_data = {
@@ -62,7 +64,7 @@
 	    data: JSON.stringify(form_data),
 	    contentType: 'application/json',
 	    success: function success(data, textStatus, jqXHR) {
-	      //localStorage.setItem('form_data.email', email);
+	      localStorage.setItem('form_data.email', email);
 	      window.location.href = "profile.html";
 	    },
 	    error: function error(jqXHR, textStatus, errorThrown) {
@@ -72,21 +74,21 @@
 	};
 	
 	function addRiderContextToAccount(moto, level, location) {
+	  var email = localStorage.getItem('form_data.email');
 	  var profile = {
+	    email: email,
 	    moto: moto,
 	    level: level,
 	    location: location
 	  };
-	  //  let currentUser = localStorage.getItem('form_data.email');
-	  //console.log(localStorage.getItem('form_data.email'));
 	  $.ajax({
-	    url: '/profile/' + currentUser,
+	    url: '/profile/' + email,
 	    type: 'PUT',
 	    data: JSON.stringify(profile),
 	    contentType: 'application/json',
 	    success: function success(data, textStatus, jqXHR) {
-	      //  window.location.href = "main.html";
-	      console.log(currentUser);
+	      window.location.href = "main.html";
+	      console.log(email);
 	      console.log(data);
 	    },
 	    error: function error(jqXHR, textStatus, errorThrown) {
