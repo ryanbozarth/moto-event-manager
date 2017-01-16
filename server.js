@@ -10,6 +10,7 @@ const handlebars = require('handlebars');
 const session = require('express-session')
 const flash = require('connect-flash');
 const cookie = require('cookie-parser');
+const expressValidator = require('express-validator');
 
 const User = require('./public/models/user.js');
 const Event = require('./public/models/event.js');
@@ -17,7 +18,7 @@ const Event = require('./public/models/event.js');
 app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(cookie());
-appp.use(flash());
+app.use(flash());
 
 //Express Session
 app.use(session({
@@ -148,13 +149,16 @@ app.post('/register', (req, res) => {
 });
 
 app.put('/profile/:email', (req, res) => {
+  console.log(req.body);
+  console.log(profile);
     User.findOneAndUpdate(req.params.email, req.body, {}, function(err, profile) {
       if (err) {
         return res.status(500).json({
           message: 'Internal server error - update'
         });
       };
-      return res.status(200).json(profile);
+      console.log(profile);
+      return res.status(200).json(req.body);
     });
 });
 
