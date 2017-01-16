@@ -150,14 +150,13 @@ app.post('/register', (req, res) => {
 
 app.put('/profile/:email', (req, res) => {
   console.log(req.body);
-  console.log(profile);
-    User.findOneAndUpdate(req.params.email, req.body, {}, function(err, profile) {
+    User.findOneAndUpdate({email: req.body.email}, req.body, {}, function(err, profile) {
       if (err) {
         return res.status(500).json({
           message: 'Internal server error - update'
         });
       };
-      console.log(profile);
+      console.log('here');
       return res.status(200).json(req.body);
     });
 });
