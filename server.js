@@ -156,7 +156,6 @@ app.put('/profile/:email', (req, res) => {
           message: 'Internal server error - update'
         });
       };
-      console.log('here');
       return res.status(200).json(req.body);
     });
 });
