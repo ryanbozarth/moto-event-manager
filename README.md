@@ -13,7 +13,7 @@ Get out and ride.
 
 ![Event Register](assets/moto-register-screenshot.png)
 
-![Rider Info](assets/moto-rider-screenshot.png)
+![Rider Info](assets/moto-rider-info-screenshot.png)
 
 ![Events Page](assets/moto-events-screenshot.png)
 
