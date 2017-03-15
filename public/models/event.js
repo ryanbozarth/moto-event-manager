@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const EventSchema = new mongoose.Schema({
+   id: {
+      type: String
+   },
     title: {
       type: String,
       required: true
@@ -16,7 +19,6 @@ const EventSchema = new mongoose.Schema({
     attendees: {
       type: Array
     }
-
 });
 
 const Event = mongoose.model('Event', EventSchema);
